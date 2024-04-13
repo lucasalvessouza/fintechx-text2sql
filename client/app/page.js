@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react";
+import toast from 'react-hot-toast'
 import CopyIcon from "./components/icons/CopyIcon";
 import { generateSql } from "@/hooks/useApi";
 
@@ -7,9 +8,18 @@ export default function Home() {
   const [question, setQuestion] = useState()
   const [sql, setSql] = useState()
 
-  const submitGenererateSql = async () => {
-    const response = await generateSql({ question })
-    setSql(response.result.replace('```sql', '').replace('```', ''))
+  const submitGenererateSql = () => {
+    generateSql({ question })
+      .then(response => {
+        setSql(response.result.replace('```sql', '').replace('```', ''))
+        toast.success('SQL gerado!', {
+          icon: '🚀'
+        })
+      }).catch(() => {
+        toast.error('Ocorreu um erro! Tente novamente em alguns minutos', {
+          icon: '❌'
+        })
+      })
   }
 
   return (
@@ -30,7 +40,7 @@ export default function Home() {
       <div className="flex">
         <button className="flex flex-row gap-2 justify-center rounded-md bg-blue-500 text-white font-bold p-2 w-[100px]">
           <CopyIcon />
-          Copy
+          Copiar
         </button>
       </div>
     </main>

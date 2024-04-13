@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Nav from './components/Nav'
 
@@ -19,6 +20,20 @@ export default function RootLayout({ children }) {
                 {children}
             </div>
         </div>
+        <Toaster
+          toastOptions={{
+            success: {
+              style: {
+                background: '#9fd786',
+              },
+            },
+            error: {
+              style: {
+                background: '#fbaaaa',
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );
