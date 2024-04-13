@@ -1,5 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
+const redisClient = require('./db/redis')
 
 const schema = `
 Table: customers
@@ -51,13 +51,28 @@ const getGenerativeAIClient = () => {
 }
 
 const generateSqlFromText = async (question) => {
-  const prompt = `Database Schema:\n${schema}\n\nQuestion: ${question}\nSQL Query:`
+  const cachedQuestion = await getCachedQuestion(question)
+  if (cachedQuestion) {
+    return cachedQuestion
+  }
+  const questionAnswer = await fetchAnswerFromGenerativeAI(question)
+  if (questionAnswer) {
+    await setCachedQuestion(question, questionAnswer)
+  }
+  return questionAnswer
+}
+
+const fetchAnswerFromGenerativeAI = async (text) => {
+  const prompt = `Database Schema:\n${schema}\n\nQuestion: ${text}\nSQL Query:`
   const generativeClient = getGenerativeAIClient()
   const result = await generativeClient.generateContent(prompt);
   const response = await result.response;
-  const text = response.text();
-  return text
+  return response.text();
 }
+
+const getCachedQuestion = async (question) => redisClient.get(question)
+
+const setCachedQuestion = async (question, content) => redisClient.set(question, content, "EX", 3600)
 
 module.exports = {
   generateSqlFromText
