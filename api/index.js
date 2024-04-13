@@ -9,6 +9,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.post('/generate-sql', async (req, res) => {
   const { question } = req.body
+  if (!question) {
+    return res.status(400).send({ error: '"question" is a required field' })
+  }
   const sql = await generateSqlFromText(question)
   return res.send({ result: sql })
 })
