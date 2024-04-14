@@ -17,6 +17,19 @@ const generateSql = async (data) => {
   return response.json()
 }
 
+const fetchAllQuestions = async (data) => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_HOST}/questions`,
+    { 
+      method: 'GET',
+      headers: getHeaders()
+    }
+  )
+
+  return response.json()
+}
+
 module.exports = {
-  generateSql
+  generateSql,
+  fetchAllQuestions
 }
