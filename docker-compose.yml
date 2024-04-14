@@ -1,22 +1,23 @@
 version: '3'
 services:
   api:
-    image: sample-express-app
+    image: api
     container_name: api
     build: ./api
-    networks:
-      - backend
     ports:
       - "3000:3000"
     depends_on:
       - redis
+
+  app:
+    container_name: app
+    image: app
+    build: ./client
+    volumes:
+      - ./app:/app/app
+    ports:
+      - 3001:3001
   
   redis:
     image: redis
     container_name: redis
-    networks:
-      - backend
-
-networks:
-  backend:
-    driver: bridge
