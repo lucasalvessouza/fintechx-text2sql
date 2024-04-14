@@ -63,6 +63,7 @@ export default function Home() {
         Gerar SQL
       </button>
       <textarea type="text" className="rounded-md p-3 min-h-[300px] bg-gray-800 border-solid border-2 border-gray-500 text-white" placeholder="SELECT * FROM users WHERE name = 'John'" value={sql}/>
+      <span className="text-gray-400 text-xs">Esse SQL pode conter erros</span>
       <div className="flex">
         <button className="flex flex-row gap-2 justify-center rounded-md bg-blue-500 text-white font-bold p-2 w-[100px]" onClick={copyToClipboard}>
           <CopyIcon />
