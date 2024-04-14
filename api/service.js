@@ -62,6 +62,10 @@ const generateSqlFromText = async (question) => {
   return questionAnswer
 }
 
+const fetchLastPrompts = async () => {
+  return getAllCachedQuestions()
+}
+
 const fetchAnswerFromGenerativeAI = async (text) => {
   const prompt = `Database Schema:\n${schema}\n\nQuestion: ${text}\nSQL Query:`
   const generativeClient = getGenerativeAIClient()
@@ -70,10 +74,20 @@ const fetchAnswerFromGenerativeAI = async (text) => {
   return response.text();
 }
 
+const getAllCachedQuestions = async () => {
+  const keys = await redisClient.keys('*')
+  const promises = keys.map(async (key) => ({
+    question: key,
+    content: await redisClient.get(key)
+  }))
+  return Promise.all(promises)
+}
+
 const getCachedQuestion = async (question) => redisClient.get(question)
 
 const setCachedQuestion = async (question, content) => redisClient.set(question, content, "EX", 3600)
 
 module.exports = {
-  generateSqlFromText
+  generateSqlFromText,
+  fetchLastPrompts
 }
