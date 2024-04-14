@@ -38,14 +38,17 @@ const Nav = () => {
         <div className={`flex justify-center ${isSidebarOpen ? 'md:justify-between' : 'justify-center'}`}>
           {
             isSidebarOpen && 
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className="dark:invert hidden md:block"
-                width={100}
-                height={24}
-                priority
-              />
+              <div className='flex flex-row gap-2 items-center'>
+                <Image
+                  src="/logo.svg"
+                  alt="Company Logo"
+                  className="hidden md:block"
+                  width={80}
+                  height={14}
+                  priority
+                />
+                <span className='text-white font-bold'>FinTechX</span>
+              </div>
           }
           <button
               className="rounded-full"
