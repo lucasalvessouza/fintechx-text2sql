@@ -20,3 +20,12 @@ This is an application to generate sql from a requirements based on a internal d
 2. change the GEMINI_API_KEY with your key.
 3. execute ```docker-compose up``` on the project root.
 4. access the app with ```http://localhost:3001```, and if you want to access the API, use ```http://localhost:3000```
+
+
+### Explaining the structure.
+- I've decided to build a BFF in this case, because we can decoouple the frontend from the LLM techonology. If we want to change from Gemini to another LLM provider, we need to change just the API.
+- The redis caching is to saving costs with the LLM provider and to list the latest searchs to the user.
+
+### Future improvements
+- SigIn/SignUp.
+- Allow the user to pass a db schema to be a agnostic application.
