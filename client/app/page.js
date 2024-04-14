@@ -1,23 +1,34 @@
 "use client"
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from 'react-hot-toast'
-import CopyIcon from "./components/icons/CopyIcon";
+import CopyIcon from "../components/icons/CopyIcon";
 import { generateSql } from "@/hooks/useApi";
-import LoadIcon from "./components/icons/LoadIcon";
+import LoadIcon from "../components/icons/LoadIcon";
+import { Context } from "@/context/state";
 
 export default function Home() {
   const [question, setQuestion] = useState()
   const [sql, setSql] = useState()
   const [isLoading, setIsLoading] = useState(false)
+  const { fetchQuestions, previousQuestion } = useContext(Context)
+
+  const formatSql = (sql => sql.replace('```sql\n', '').replace('\n```', ''))
+  useEffect(() => {
+    if (previousQuestion) {
+      setSql(formatSql(previousQuestion.content))
+      setQuestion(previousQuestion.question)
+    }
+  }, [previousQuestion])
 
   const submitGenererateSql = () => {
     setIsLoading(true)
     generateSql({ question })
       .then(response => {
-        setSql(response.result.replace('```sql', '').replace('```', ''))
+        setSql(formatSql(response.result))
         toast.success('SQL gerado!', {
           icon: '🚀'
         })
+        fetchQuestions()
       }).catch(() => {
         toast.error('Ocorreu um erro! Tente novamente em alguns minutos', {
           icon: '❌'

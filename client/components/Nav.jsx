@@ -1,20 +1,17 @@
 "use client"
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Image from "next/image";
-import { toast } from 'react-hot-toast'
 import ArrowLeftIcon from './icons/ArrowLeftIcon';
 import ArrowRightIcon from './icons/ArrowRightIcon';
-import { fetchAllQuestions } from '../../hooks/useApi'
 import ArrowCircleIcon from './icons/ArrowCircleIcon';
+import { Context } from '@/context/state';
 
 const Nav = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [questions, setQuestions] = useState([])
+  const { fetchQuestions, questions, selectPreviousQuestion } = useContext(Context)
 
   useEffect(() => {
-    fetchAllQuestions()
-      .then(response => setQuestions([...response.questions].reverse()))
-      .catch(() => toast.error('Houve um problema para buscar as perguntas recentes.'))
+    fetchQuestions()
   }, [])
 
   function handleWindowSizeChange() {
@@ -65,7 +62,7 @@ const Nav = () => {
             <p className='text-sm text-gray-400 px-3'>Perguntas recentes</p>
             {questions.map(({ question }, index) => {
               return (
-                <div key={index} className='flex flex-row justify-between hover:bg-gray-500 hover:rounded-md hover:cursor-pointer px-3 py-2 text-wrap'>
+                <div key={index} className='flex flex-row justify-between hover:bg-gray-500 hover:rounded-md hover:cursor-pointer px-3 py-2 text-wrap' onClick={() => selectPreviousQuestion(question)}>
                   <p className='text-white w-[90%]'>{question}</p>
                   <button>
                     <ArrowCircleIcon />
