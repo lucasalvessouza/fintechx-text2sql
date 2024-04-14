@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col gap-5">
-      <h1 className="text-white text-2xl font-bold">Generate SQL</h1>
+      <h1 className="text-white text-2xl font-bold">Gerar SQL</h1>
       <div className="flex flex-col gap-3">
         <label className="text-gray-300 text-sm font-light">Digite aqui sua pergunta:</label>
         <textarea
