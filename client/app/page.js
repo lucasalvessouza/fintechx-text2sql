@@ -44,11 +44,11 @@ export default function Home() {
         />
       </div>
       <button
-        className={`flex flex-row gap-2 justify-center rounded-md bg-blue-500 p-2 text-white font-bold ${isLoading && 'opacity-50'}`}
+        className={`flex flex-row gap-2 justify-center rounded-md bg-blue-500 p-2 text-white font-bold ${isLoading ? 'opacity-50' : undefined}`}
         onClick={submitGenererateSql}
         disabled={isLoading}
       >
-        <LoadIcon className={isLoading && `w-6 h-6 animate-spin`} />
+        <LoadIcon className={isLoading ? 'w-6 h-6 animate-spin' : undefined} />
         Gerar SQL
       </button>
       <textarea type="text" className="rounded-md p-3 min-h-[300px] bg-gray-800 border-solid border-2 border-gray-500 text-white" placeholder="SELECT * FROM users WHERE name = 'John'" value={sql}/>
